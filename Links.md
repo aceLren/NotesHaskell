@@ -65,3 +65,9 @@ Client Side Apps
 ---
 
 [Haste](https://www.airpair.com/haskell/posts/haskell-tutorial-introduction-to-web-apps)
+
+Code Music
+---
+
+[Tida](http://tidal.lurk.org/)
+[Tidal Example](http://www.garrisonjensen.com/2015/04/21/coding-music.html)
