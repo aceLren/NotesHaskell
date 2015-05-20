@@ -111,6 +111,8 @@ square a = Rectangle a a
 Signature Way
 ----
 
+Not recommended!
+
 ```haskell
 {-# LANGUAGE FlexibleInstances #-}
 class MakeRectangle a where
