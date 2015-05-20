@@ -60,3 +60,8 @@ For OO, easy to add class, FP, easy to add function.  Here's a method that
 makes it easy to add functions in FP:
 
 [Expression Problem](https://github.com/Dobiasd/articles/blob/master/from_oop_to_fp_-_inheritance_and_the_expression_problem.md)
+
+Client Side Apps
+---
+
+[Haste](https://www.airpair.com/haskell/posts/haskell-tutorial-introduction-to-web-apps)
