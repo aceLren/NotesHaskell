@@ -50,6 +50,50 @@ instance Fooable Bool where
     foo _ = 42
 ```
 
+Bonus
+-----
+
+```haskell
+class Barable a where
+    bar :: Int -> a
+
+instance Barable Int where
+    bar x = x + 3
+
+instance Barable Bool where
+    bar x = x < 10
+```
+
+Rectangle Example
+----
+
+How do you represent this in haskell:
+
+```cpp
+class Rectangle
+{
+    private:
+        int length;
+        int width;
+    public:
+        Rectangle()
+        {
+            length = 0;
+            width = 0;
+        }
+        Rectangle(int x)
+        {
+            length = x;
+            width =0;
+        }
+        Rectangle ( int x , int y)
+        {
+            length = x;
+            width = y;
+        }
+};
+```
+
 Haskell Way
 ----
 
@@ -80,18 +124,4 @@ instance MakeRectangle (Length -> Rectangle) where
 
 instance MakeRectangle (Length -> Width -> Rectangle) where
   rectangle = Rectangle
-```
-
-Bonus
------
-
-```haskell
-class Barable a where
-    bar :: Int -> a
-
-instance Barable Int where
-    bar x = x + 3
-
-instance Barable Bool where
-    bar x = x < 10
 ```
