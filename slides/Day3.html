@@ -205,7 +205,7 @@ describeList xs <span class="fu">=</span> <span class="st">&quot;The list is &qu
 </ol>
 </section><section id="example" class="slide level2">
 <h1>Example</h1>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">MetricUnit</span> <span class="fu">=</span> <span class="dt">Meter</span> <span class="fu">|</span> <span class="dt">Liter</span> <span class="fu">|</span> <span class="dt">KiloGram</span> <span class="kw">deriving</span> <span class="dt">Show</span>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">MetricUnit</span> <span class="fu">=</span> <span class="dt">Meter</span> <span class="fu">|</span> <span class="dt">Liter</span> <span class="fu">|</span> <span class="dt">KiloGram</span> <span class="kw">deriving</span> (<span class="dt">Show</span>, <span class="dt">Eq</span>)
 <span class="kw">data</span> <span class="dt">ImperialUnit</span> <span class="fu">=</span> <span class="dt">Yard</span> <span class="fu">|</span> <span class="dt">Gallon</span> <span class="fu">|</span> <span class="dt">Pound</span> <span class="kw">deriving</span> <span class="dt">Show</span>
 <span class="kw">data</span> <span class="dt">Measurement</span> <span class="fu">=</span> <span class="dt">MetricMeasurement</span> <span class="dt">Double</span> <span class="dt">MetricUnit</span>
                  <span class="fu">|</span> <span class="dt">ImperialMeasurement</span> <span class="dt">Double</span> <span class="dt">ImperialUnit</span>
@@ -215,9 +215,10 @@ describeList xs <span class="fu">=</span> <span class="st">&quot;The list is &qu
 <span class="ot">symbol ::</span> <span class="dt">MetricUnit</span> <span class="ot">-&gt;</span> <span class="dt">String</span>
 symbol <span class="fu">=</span> undefined
 
-<span class="co">-- or</span>
-<span class="kw">instance</span> <span class="dt">Show</span> <span class="dt">MetricUnit</span> <span class="kw">where</span>
-    show <span class="dt">Meter</span> <span class="fu">=</span> undefined
+<span class="co">-- To make an instance of Show typeclass manually</span>
+<span class="co">-- instance Show MetricUnit where</span>
+<span class="co">--    show Meter = undefined</span>
+<span class="fu">--</span>
 
 <span class="ot">convert ::</span> <span class="dt">Measurement</span> <span class="ot">-&gt;</span> <span class="dt">Measurement</span>
 convert <span class="fu">=</span> undefined
@@ -229,6 +230,19 @@ convert <span class="fu">=</span> undefined
 <span class="co">-- IM pund -&gt; 0.4536 kg</span>
 
 <span class="co">-- try invariant convert (convert m)</span></code></pre></div>
+</section><section id="typeclass" class="slide level2">
+<h1>Typeclass</h1>
+<p>These are similar to interfaces. I implement equality or &quot;show&quot; functionality and you can compare or serialize to string. For normal sum types, the Haskell compiler is smart and can figure it out. Just append &quot;deriving (Eq, Show)&quot; like in the example. Manually it looks like this:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">instance</span> <span class="dt">Show</span> <span class="dt">MetricUnit</span> <span class="kw">where</span>
+    show <span class="dt">Meter</span> <span class="fu">=</span> <span class="st">&quot;m&quot;</span>
+    show <span class="dt">Liter</span> <span class="fu">=</span> <span class="st">&quot;L&quot;</span>
+    show <span class="dt">KiloGram</span> <span class="fu">=</span> <span class="st">&quot;kg&quot;</span>
+
+<span class="kw">instance</span> <span class="dt">Eq</span> <span class="dt">MetricUnit</span> <span class="kw">where</span>
+    <span class="dt">Metric</span> <span class="fu">==</span> <span class="dt">Metric</span> <span class="fu">=</span> <span class="dt">True</span>
+    <span class="dt">Liter</span> <span class="fu">==</span> <span class="dt">Liter</span> <span class="fu">=</span> <span class="dt">True</span>
+    <span class="dt">KiloGram</span> <span class="fu">==</span> <span class="dt">KiloGram</span> <span class="fu">=</span> <span class="dt">True</span>
+    _ <span class="fu">==</span> _ <span class="fu">=</span> <span class="dt">False</span></code></pre></div>
 </section><section id="type-variables" class="slide level2">
 <h1>Type variables</h1>
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">head<span class="ot"> ::</span> [a] <span class="ot">-&gt;</span> a

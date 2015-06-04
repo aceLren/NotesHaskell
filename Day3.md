@@ -249,7 +249,7 @@ Example
 ---
 
 ```haskell
-data MetricUnit = Meter | Liter | KiloGram deriving Show
+data MetricUnit = Meter | Liter | KiloGram deriving (Show, Eq)
 data ImperialUnit = Yard | Gallon | Pound deriving Show
 data Measurement = MetricMeasurement Double MetricUnit
                  | ImperialMeasurement Double ImperialUnit
@@ -259,9 +259,10 @@ data Measurement = MetricMeasurement Double MetricUnit
 symbol :: MetricUnit -> String
 symbol = undefined
 
--- or
-instance Show MetricUnit where
-    show Meter = undefined
+-- To make an instance of Show typeclass manually
+-- instance Show MetricUnit where
+--    show Meter = undefined
+--
 
 convert :: Measurement -> Measurement
 convert = undefined
@@ -273,6 +274,27 @@ convert = undefined
 -- IM pund -> 0.4536 kg
 
 -- try invariant convert (convert m)
+```
+
+Typeclass
+---
+
+These are similar to interfaces.  I implement equality or "show" functionality
+and you can compare or serialize to string.  For normal sum types,
+the Haskell compiler is smart and can figure it out.  Just append "deriving
+(Eq, Show)" like in the example.  Manually it looks like this:
+
+```haskell
+instance Show MetricUnit where
+    show Meter = "m"
+    show Liter = "L"
+    show KiloGram = "kg"
+
+instance Eq MetricUnit where
+    Metric == Metric = True
+    Liter == Liter = True
+    KiloGram == KiloGram = True
+    _ == _ = False
 ```
 
 Type variables
