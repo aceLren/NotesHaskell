@@ -259,11 +259,6 @@ data Measurement = MetricMeasurement Double MetricUnit
 symbol :: MetricUnit -> String
 symbol = undefined
 
--- To make an instance of Show typeclass manually
--- instance Show MetricUnit where
---    show Meter = undefined
---
-
 convert :: Measurement -> Measurement
 convert = undefined
 -- MM m -> yard 1.0936
