@@ -3,11 +3,11 @@ Haskell Day 1
 
 ---
 
-![Languages](../images/language_rankings.png)
+![Languages](images/language_rankings.png)
 
 ---
 
-![Languages](../images/langs.jpg)
+![Languages](images/langs.jpg)
 
 ---
 
@@ -22,7 +22,7 @@ More Than a Language
 
 > I know why you're here. ...why you hardly sleep, why night after night, you sit by your computer.
 
-![Neo](../images/neo.jpg)
+![Neo](images/neo.jpg)
 
 Me?
 ---
@@ -45,13 +45,13 @@ History - 1930's
 
 Alonzo Church invented [λ-calculus](ftp://ftp.cs.ru.nl/pub/CompMath.Found/lambda.pdf)
 
-![Church](../images/church.jpg)
+![Church](images/church.jpg)
 
 ---
 
 Then John McCarthy invented [Lisp](http://www.gnu.org/software/emacs/emacs-lisp-intro/html_node/lambda.html)
 
-![mcarthy](../images/mccarthy.jpg)
+![mcarthy](images/mccarthy.jpg)
 
 
 Contrast
@@ -59,7 +59,7 @@ Contrast
 
 Turing and machine code.
 
-![Turing](../images/turing.jpg)
+![Turing](images/turing.jpg)
 
 Equated in expressiveness in 1937.
 
@@ -164,7 +164,7 @@ Core Principles
 Inference
 ---
 
-![Hindley](../images/hindleyMilner.png)
+![Hindley](images/hindleyMilner.png)
 
 That's how we
 ---
@@ -193,7 +193,7 @@ Pure
 
 Every function has a return - mathematical.
 
-![ex set](../images/example_set.png)
+![ex set](images/example_set.png)
 
     s = [ 2*x | x <- [0..], x^2 > 3 ]
     f(x) = x^2 + 1
@@ -272,4 +272,4 @@ Like propositional logic!
 
 ---
 
-![Logic](../images/hindleyMilner.png)
+![Logic](images/hindleyMilner.png)

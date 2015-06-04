@@ -14,11 +14,11 @@ is important to you?
 [Comparison of F# and C# in the wild](http://fsharpforfunandprofit.com/posts/cycles-and-modularity-in-the-wild/)
 
 
-![Code vs Dependencies](../images/top_level_and_dependencies.png)
+![Code vs Dependencies](images/top_level_and_dependencies.png)
 
 ---
 
-![Top vs Cycles](../images/top_level_and_cycles.png)
+![Top vs Cycles](images/top_level_and_cycles.png)
 
 Essentially
 ---
@@ -182,7 +182,7 @@ Functional is almost as much about lists as functions.
 
 [Lists](https://hackage.haskell.org/package/base-4.8.0.0/docs/Prelude.html#g:13)
 
-![List Monster](../images/listmonster.png)
+![List Monster](images/listmonster.png)
 
 
 Lists
