@@ -225,7 +225,9 @@ convert <span class="fu">=</span> undefined
 <span class="co">-- IM gallon -&gt; 3.7854 liter</span>
 <span class="co">-- IM pund -&gt; 0.4536 kg</span>
 
-<span class="co">-- try invariant convert (convert m)</span></code></pre></div>
+<span class="co">-- to prove it's correct, use invariant:</span>
+<span class="co">-- main = print (convert (convert MetricMeasurement 3 Meter))</span>
+<span class="co">-- &gt; MetricMeasurement 3 Meter</span></code></pre></div>
 </section><section id="typeclass" class="slide level2">
 <h1>Typeclass</h1>
 <p>These are similar to interfaces. I implement equality or &quot;show&quot; functionality and you can compare or serialize to string. For normal sum types, the Haskell compiler is smart and can figure it out. Just append &quot;deriving (Eq, Show)&quot; like in the example. Manually it looks like this:</p>

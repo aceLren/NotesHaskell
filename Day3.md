@@ -268,7 +268,9 @@ convert = undefined
 -- IM gallon -> 3.7854 liter
 -- IM pund -> 0.4536 kg
 
--- try invariant convert (convert m)
+-- to prove it's correct, use invariant:
+-- main = print (convert (convert MetricMeasurement 3 Meter))
+-- > MetricMeasurement 3 Meter
 ```
 
 Typeclass
