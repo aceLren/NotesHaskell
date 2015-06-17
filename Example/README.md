@@ -34,15 +34,23 @@ You can install my websocket library by cloning my thrift fork:
 
     git clone https://github.com/aceLren/thrift.git clone_dir
 
-Run
+I've already used Thrift to generate source files for us, but if you want to do it
+install thrift and then:
+
+    thrift --gen hs -o lib/ Serv.thrift
+    thrift --gen js -o lib/ Serv.thrift
+
+Run Example
 ---
 Then getting the Example to run should be as simple as:
 
     cd ExampleDir
     mkdir serv-dev/resources/db
+    ln -s serv-dev/lib serv-dev/web
 
     cabal sandbox init
     cabal install clone_dir/lib/hs
+    // This install will give you an error, ignore it
     cabal install
     cabal run
 
