@@ -76,6 +76,7 @@ instance SI.Serv_Iface Global where
         print $ "Sending back " <> show retVal
         return retVal
 
+main :: IO ()
 main = runStderrLoggingT $ withSqlitePool "resources/db/example.db" 5 $ \pool -> do
     -- Automatically build my database
     runSqlPool (runMigration migrateAll) pool
