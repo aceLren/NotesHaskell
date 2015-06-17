@@ -22,6 +22,8 @@ dependencies file).  For excel, use [xlsx](https://hackage.haskell.org/package/x
 Database
 ---
 
+You'll need sqlite installed, that's the database I'm using here.
+
 I've included an ORM library called Persistent for automatically storing data in
 the database.  It's data type definition looks different than normal because it
 uses template Haskell.  We probably won't have time to get into that much, but
