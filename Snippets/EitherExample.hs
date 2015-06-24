@@ -1,3 +1,14 @@
+-- Either definition
+-- data  Either a b  =  Left a | Right b
+--   deriving (Eq, Ord, Read, Show, Typeable)
+
+-- instance Functor (Either a) where
+--     fmap _ (Left x) = Left x
+--     fmap f (Right y) = Right (f y)
+
+-- instance Monad (Either e) where
+--     ...
+
 onlyEvens :: Int -> Either String Int
 onlyEvens x = if even x then return x else Left "It wasn't even"
 

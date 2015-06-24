@@ -1,5 +1,10 @@
 import Control.Monad.State.Lazy
 
+-- newtype State s a = State { runState :: s -> (a,s) }
+
+-- instance Monad (State s) where
+--     ...
+
 type Stack = [Int]
 
 -- FIRST what does this look like without State monad?
@@ -31,5 +36,7 @@ stackManip' = do
     stackNow <- get
     if stackNow == [1,2,3]
         then put [8,2,5]
-        else put [9,9,9]
+        else put stackNow
     return a
+
+-- main = runState stackManip' [1,1,2,3]

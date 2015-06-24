@@ -1,5 +1,6 @@
 import Prelude hiding ((>>=), return)
 
+-- This is a backtracking constraint monad:
 -- FROM http://www.randomhacks.net/2007/03/12/monads-in-15-minutes/
 
 type Choice a = [a]
