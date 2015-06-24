@@ -86,13 +86,13 @@ code > span.in { color: #7f9f7f; font-weight: bold; } /* Information */
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">c_cos ::</span> <span class="dt">CDouble</span> <span class="ot">-&gt;</span> <span class="dt">IO</span> <span class="dt">CDouble</span>
 c_cos x <span class="fu">=</span> [C.exp<span class="fu">|</span> double { cos(<span class="fu">$</span>(double x))} <span class="fu">|</span>]
 
-<span class="ot">calc_nnls ::</span> <span class="dt">CInt</span> <span class="ot">-&gt;</span> <span class="dt">IO</span> <span class="dt">CFloat</span>
-calc_nnls x <span class="fu">=</span> [C.exp<span class="fu">|</span> float { calc_nnls_maxiter(<span class="fu">$</span>(int x))} <span class="fu">|</span>]
+<span class="ot">calc_iter ::</span> <span class="dt">CInt</span> <span class="ot">-&gt;</span> <span class="dt">IO</span> <span class="dt">CFloat</span>
+calc_iter x <span class="fu">=</span> [C.exp<span class="fu">|</span> float { calc_maxiter(<span class="fu">$</span>(int x))} <span class="fu">|</span>]
 
 main <span class="fu">=</span> <span class="kw">do</span>
     vl <span class="ot">&lt;-</span> c_cos <span class="fl">3.0</span>
     print vl
-    v2 <span class="ot">&lt;-</span> calc_nnls <span class="dv">3</span>
+    v2 <span class="ot">&lt;-</span> calc_iter <span class="dv">3</span>
     print v2</code></pre></div>
 </section><section id="monads" class="slide level2">
 <h1>MONADS</h1>
