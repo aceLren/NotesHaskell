@@ -13,6 +13,7 @@ This is mostly from:
 -   [Functors, Applicatives, and Monads in Pictures](http://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html)
 -   [Starting with Haskell](https://www.fpcomplete.com/school/starting-with-haskell)
 -   [Functional Programming by Examples](https://github.com/caiorss/Functional-Programming)
+-   [Monads in 15 Minutes](http://www.randomhacks.net/2007/03/12/monads-in-15-minutes/)
 -   [Gists](https://github.com/kqr/gists)
 
 The scaffold for simple web apps etc will live here as well.
