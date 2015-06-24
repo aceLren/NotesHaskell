@@ -12,11 +12,11 @@ cabal sandbox init
 cabal install (whatever dependency gets complained about)
 ```
 
-Then any time you want to run an example:
+That puts the dependencies in the sandbox so cabal can find them when you run the repl.  To do that on any of the example files::
 
 ```haskell
 cabal repl
 ghci>:l Example.hs
 ```
 
-Then you'll be able to run the defined functions.
+And you'll be able to run the defined functions.
