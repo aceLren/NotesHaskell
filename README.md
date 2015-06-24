@@ -6,7 +6,16 @@ Overview
 
 This is the course repository for the SFU intro class.  It will be a "today I learned" sort of repo with links, examples, and class notes.  Class notes are the Day... slides.
 
-The scaffold for simple web apps etc will live here as well.  If you want to contribute, ping ahsoren@sandia.gov.
+This is mostly from:
+
+-   [Intro to Haskell](http://shuklan.com/haskell/)
+-   [LYAH](http://learnyouahaskell.com/)
+-   [Functors, Applicatives, and Monads in Pictures](http://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html)
+-   [Starting with Haskell](https://www.fpcomplete.com/school/starting-with-haskell)
+-   [Functional Programming by Examples](https://github.com/caiorss/Functional-Programming)
+-   [Gists](https://github.com/kqr/gists)
+
+The scaffold for simple web apps etc will live here as well.
 
 slides
 ---
