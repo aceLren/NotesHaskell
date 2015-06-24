@@ -18,12 +18,12 @@
 norm :: Double -> Double -> Double
 norm x y = sqrt (x ^ 2 + y ^ 2)
 
-normVComp :: [Double] -> [Double] -> [Double]
-normVComp xs ys = [norm x y | x <- xs, y <- ys]
+norm'' :: [Double] -> [Double] -> [Double]
+norm'' xs ys = [norm x y | x <- xs, y <- ys]
 
 -- vectorize?
-normV :: [Double] -> [Double] -> [Double]
-normV xs ys = do
+norm' :: [Double] -> [Double] -> [Double]
+norm' xs ys = do
     x <- xs
     y <- ys
     return $ norm x y
@@ -31,5 +31,5 @@ normV xs ys = do
     -- return (z + 3.0)
     -- or [norm x y]
 
-normVDot :: [Double] -> [Double] -> [Double]
-normVDot xs ys = zipWith norm xs ys 
+normPair :: [Double] -> [Double] -> [Double]
+normPair xs ys = zipWith norm xs ys 
