@@ -15,4 +15,4 @@ To generate slides, first you need to pull the revealjs code into your folder an
 
 Then type:
 
-    pandoc -t revealjs -s Day1.md -o slides/Day1.html --self-contained --slide-level=2 --highlight-style=zenburn --variable theme="light"
+    pandoc -t revealjs -s Day1.md -o slides/Day1.html --self-contained --slide-level=2 --highlight-style=zenburn --variable theme="simple"

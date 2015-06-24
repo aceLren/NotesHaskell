@@ -33,6 +33,9 @@ import           Network.Wai.Middleware.Cors    (simpleCors)
 import qualified Network.WebSockets             as WS
 import qualified Network.WebSockets.Connection  as WS
 import           Thrift.WSServer
+import Data.Attoparsec.ByteString.Char8
+import Control.Applicative
+import qualified Data.ByteString.Char8 as B
 
 import           Serv
 import qualified Serv_Iface                     as SI
@@ -41,6 +44,40 @@ import qualified Serv_Types                     as ST
 type People = [Text]
 data Global = Global { pool :: ConnectionPool, ppl :: TVar People }
 
+type Dollars = Double
+data Food = BEEF | CHK | FISH | HAM | MCH | MTL | SPG | TUR deriving (Show, Ord, Eq)
+data Nutrition = Nutrition { food :: Food, cost :: Dollars, a :: Int, c :: Int, b1 :: Int, b2 :: Int } deriving (Show)
+
+foodParser :: Parser Food 
+foodParser =
+        (string "BEEF"  >> return BEEF)
+    <|> (string "CHK"   >> return CHK)
+    <|> (string "FISH"  >> return FISH)
+    <|> (string "HAM"   >> return HAM)
+    <|> (string "MCH"   >> return MCH)
+    <|> (string "MTL"   >> return MTL)
+    <|> (string "SPG"   >> return SPG)
+    <|> (string "TUR"   >> return TUR)
+
+parseNutritionField :: Parser Nutrition
+parseNutritionField = do
+    let sep = skipSpace >> char ',' >> skipSpace
+    f <- foodParser
+    sep
+    av <- decimal
+    sep
+    cv <- decimal 
+    sep 
+    b1v <- decimal
+    sep
+    b2v <- decimal
+    return $ Nutrition f 0.0 av cv b1v b2v
+
+parseNutrition :: Parser [Nutrition]
+parseNutrition = do
+    manyTill anyChar endOfLine
+    many $ parseNutritionField <* endOfLine
+
 -- Example data type that can be stored in the db
 share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persistLowerCase|
 MyData
@@ -48,7 +85,6 @@ MyData
     numb Int
     time UTCTime Maybe
 |]
-
 
 nobody :: [Text]
 nobody = []
@@ -77,20 +113,25 @@ instance SI.Serv_Iface Global where
         return retVal
 
 main :: IO ()
-main = runStderrLoggingT $ withSqlitePool "resources/db/example.db" 5 $ \pool -> do
-    -- Automatically build my database
-    runSqlPool (runMigration migrateAll) pool
+main = do
+    csv <- B.readFile "VitaminContent.csv"
+    let nutrition = parseOnly parseNutrition csv
+    print nutrition
 
-    st <- liftIO $ atomically $ newTVar nobody
-    let glbl = Global pool st
-        app = staticApp $ defaultWebAppSettings "web"
-        wsMiddle = WS.websocketsOr WS.defaultConnectionOptions (wsHandler glbl Serv.process)
+    runStderrLoggingT $ withSqlitePool "resources/db/example.db" 5 $ \pool -> do
+        -- Automatically build my database
+        runSqlPool (runMigration migrateAll) pool
 
-    liftIO
-        $ runSettings (setPort 8080 defaultSettings)
-        $ (wsMiddle . simpleCors) app
+        st <- liftIO $ atomically $ newTVar nobody
+        let glbl = Global pool st
+            app = staticApp $ defaultWebAppSettings "web"
+            wsMiddle = WS.websocketsOr WS.defaultConnectionOptions (wsHandler glbl Serv.process)
 
-    -- Example TLS version (uncomment WarpTLS above and generate your certs using openssl)
-    -- liftIO $ runTLS (tlsSettings "resources/certs/server.crt" "resources/certs/server.key")
-    --     { tlsWantClientCert = False
-    --     } (setPort 8080 defaultSettings) $ (wsMiddle . simpleCors) app
+        liftIO
+            $ runSettings (setPort 8080 defaultSettings)
+            $ (wsMiddle . simpleCors) app
+
+        -- Example TLS version (uncomment WarpTLS above and generate your certs using openssl)
+        -- liftIO $ runTLS (tlsSettings "resources/certs/server.crt" "resources/certs/server.key")
+        --     { tlsWantClientCert = False
+        --     } (setPort 8080 defaultSettings) $ (wsMiddle . simpleCors) app
