@@ -22,13 +22,13 @@ Using C
 c_cos :: CDouble -> IO CDouble
 c_cos x = [C.exp| double { cos($(double x))} |]
 
-calc_nnls :: CInt -> IO CFloat
-calc_nnls x = [C.exp| float { calc_nnls_maxiter($(int x))} |]
+calc_iter :: CInt -> IO CFloat
+calc_iter x = [C.exp| float { calc_maxiter($(int x))} |]
 
 main = do
     vl <- c_cos 3.0
     print vl
-    v2 <- calc_nnls 3
+    v2 <- calc_iter 3
     print v2
 ```
 
