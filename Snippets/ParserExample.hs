@@ -1,4 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
+-- To see how this Monad works, take a look here:
+-- https://hackage.haskell.org/package/attoparsec-0.13.0.0/docs/src/Data-Attoparsec-Internal-Types.html#Parser
+-- (this ones pretty complex)
 
 import Prelude hiding (takeWhile)
 import Data.Attoparsec.ByteString.Char8
