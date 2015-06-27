@@ -80,8 +80,8 @@ test :: Bool
 test = runState stackManip' [41,2,3] == stackManip [41,2,3]
 
 -- Or we can get fancy and do a quickcheck!
-prop_same_pop :: [Int] -> [Int] -> Bool
-prop_same_pop xs ys = runState stackManip' (xs ++ ys) == stackManip (xs ++ ys)
+prop_same_pop :: [Int] -> Bool
+prop_same_pop xs = runState stackManip' xs == stackManip xs
 
 main :: IO ()
 main = quickCheckWith stdArgs { maxSuccess = 500 } prop_same_pop
