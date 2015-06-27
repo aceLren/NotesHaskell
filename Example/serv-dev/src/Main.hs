@@ -45,12 +45,24 @@ import           Serv
 import qualified Serv_Iface                     as SI
 import qualified Serv_Types                     as ST
 
+-------------------------------------------------
+-- Example types for our server
+-------------------------------------------------
+
 type People = [Text]
 data Global = Global { pool :: ConnectionPool, ppl :: TVar People }
+
+-------------------------------------------------
+-- Example data for our LP
+-------------------------------------------------
 
 type Dollars = Double
 data Food = BEEF | CHK | FISH | HAM | MCH | MTL | SPG | TUR deriving (Show, Ord, Eq)
 data Nutrition = Nutrition { food :: Food, cost :: Dollars, a :: Int, c :: Int, b1 :: Int, b2 :: Int } deriving (Show)
+
+-------------------------------------------------
+-- Example parsing (including manually doing csv)
+-------------------------------------------------
 
 foodParser :: Parser Food
 foodParser =
@@ -82,7 +94,10 @@ parseNutrition = do
     manyTill anyChar endOfLine
     many $ parseNutritionField <* endOfLine
 
--- Example data type that can be stored in the db
+-------------------------------------------------
+-- Example data that can be stored in the DB
+-------------------------------------------------
+
 share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persistLowerCase|
 MyData
     name Text
@@ -92,6 +107,10 @@ MyData
 
 nobody :: [Text]
 nobody = []
+
+-------------------------------------------------
+-- Server Instance!
+-------------------------------------------------
 
 class DBer a where
     doDB :: MonadBaseControl IO m => a -> SqlPersistT m b -> m b
@@ -116,7 +135,10 @@ instance SI.Serv_Iface Global where
         print $ "Sending back " <> show retVal
         return retVal
 
--- | Excel helpers --------------------------------
+-------------------------------------------------
+-- Excel helpers
+-------------------------------------------------
+
 cellT :: Maybe CellValue -> Maybe Text
 cellT (Just (CellText t)) = Just t
 cellT _ = Nothing
@@ -135,10 +157,13 @@ maybeUntil a (x:xs) = case (a x) of
     Nothing -> []
     Just v -> v : maybeUntil a xs
 
-readPrices :: Xlsx -> [(Food, Double)]
+-------------------------------------------------
+-- Read from Excel
+-------------------------------------------------
+readPrices :: Xlsx -> [(Food, Dollars)]
 readPrices xl = maybeUntil (priceFromExcel xl) [0..]
 
-priceFromExcel :: Xlsx -> Int -> Maybe (Food, Double)
+priceFromExcel :: Xlsx -> Int -> Maybe (Food, Dollars)
 priceFromExcel xl i
     | Just textFood  <- cellT $ xl ^? ixSheet "Prices" . ixCell (base + i, 1) . cellValue . _Just
     , Right food     <- parseOnly foodParser (encodeUtf8 textFood)
