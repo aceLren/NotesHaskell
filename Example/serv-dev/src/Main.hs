@@ -5,45 +5,45 @@
 {-# LANGUAGE OverloadedStrings          #-}
 {-# LANGUAGE QuasiQuotes                #-}
 {-# LANGUAGE TemplateHaskell            #-}
-{-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE TypeFamilies               #-}
 
-import Codec.Xlsx
-import Control.Lens
-import           Control.Concurrent.STM         (atomically)
-import           Control.Concurrent.STM.TVar    (TVar, newTVar, readTVar,
-                                                 writeTVar)
-import           Control.Monad.IO.Class         (liftIO)
-import           Control.Monad.Logger           (runStderrLoggingT)
-import           Control.Monad.Trans.Control    (MonadBaseControl (..))
+import           Codec.Xlsx
+import           Control.Concurrent.STM           (atomically)
+import           Control.Concurrent.STM.TVar      (TVar, newTVar, readTVar,
+                                                   writeTVar)
+import           Control.Lens
+import           Control.Monad.IO.Class           (liftIO)
+import           Control.Monad.Logger             (runStderrLoggingT)
+import           Control.Monad.Trans.Control      (MonadBaseControl (..))
 import           Data.Monoid
 import           Data.Text
-import          Data.Text.Encoding (encodeUtf8)
-import           Data.Time                      (UTCTime, getCurrentTime)
-import           Database.Persist               (insert)
-import           Database.Persist.Sqlite        (ConnectionPool, SqlPersistT,
-                                                 runMigration, runSqlPool,
-                                                 withSqlitePool)
-import           Database.Persist.TH            (mkMigrate, mkPersist,
-                                                 persistLowerCase, share,
-                                                 sqlSettings)
-import           Network.Wai.Application.Static (defaultWebAppSettings,
-                                                 staticApp)
-import           Network.Wai.Handler.Warp       (defaultSettings, runSettings,
-                                                 setPort)
+import           Data.Text.Encoding               (encodeUtf8)
+import           Data.Time                        (UTCTime, getCurrentTime)
+import           Database.Persist                 (insert)
+import           Database.Persist.Sqlite          (ConnectionPool, SqlPersistT,
+                                                   runMigration, runSqlPool,
+                                                   withSqlitePool)
+import           Database.Persist.TH              (mkMigrate, mkPersist,
+                                                   persistLowerCase, share,
+                                                   sqlSettings)
+import           Network.Wai.Application.Static   (defaultWebAppSettings,
+                                                   staticApp)
+import           Network.Wai.Handler.Warp         (defaultSettings, runSettings,
+                                                   setPort)
 -- import           Network.Wai.Handler.WarpTLS    (runTLS, TLSSettings(..), tlsSettings)
-import qualified Network.Wai.Handler.WebSockets as WS
-import           Network.Wai.Middleware.Cors    (simpleCors)
-import qualified Network.WebSockets             as WS
-import qualified Network.WebSockets.Connection  as WS
+import           Control.Applicative
+import           Data.Attoparsec.ByteString.Char8
+import qualified Data.ByteString.Char8            as B
+import qualified Data.ByteString.Lazy             as L
+import qualified Network.Wai.Handler.WebSockets   as WS
+import           Network.Wai.Middleware.Cors      (simpleCors)
+import qualified Network.WebSockets               as WS
+import qualified Network.WebSockets.Connection    as WS
 import           Thrift.WSServer
-import Data.Attoparsec.ByteString.Char8
-import Control.Applicative
-import qualified Data.ByteString.Char8 as B
-import qualified Data.ByteString.Lazy as L
 
 import           Serv
-import qualified Serv_Iface                     as SI
-import qualified Serv_Types                     as ST
+import qualified Serv_Iface                       as SI
+import qualified Serv_Types                       as ST
 
 -------------------------------------------------
 -- Example types for our server
