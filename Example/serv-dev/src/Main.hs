@@ -5,8 +5,10 @@
 {-# LANGUAGE OverloadedStrings          #-}
 {-# LANGUAGE QuasiQuotes                #-}
 {-# LANGUAGE TemplateHaskell            #-}
-{-# LANGUAGE TypeFamilies               #-}
+{-# LANGUAGE TypeFamilies #-}
 
+import Codec.Xlsx
+import Control.Lens
 import           Control.Concurrent.STM         (atomically)
 import           Control.Concurrent.STM.TVar    (TVar, newTVar, readTVar,
                                                  writeTVar)
@@ -15,6 +17,7 @@ import           Control.Monad.Logger           (runStderrLoggingT)
 import           Control.Monad.Trans.Control    (MonadBaseControl (..))
 import           Data.Monoid
 import           Data.Text
+import          Data.Text.Encoding (encodeUtf8)
 import           Data.Time                      (UTCTime, getCurrentTime)
 import           Database.Persist               (insert)
 import           Database.Persist.Sqlite        (ConnectionPool, SqlPersistT,
@@ -36,6 +39,7 @@ import           Thrift.WSServer
 import Data.Attoparsec.ByteString.Char8
 import Control.Applicative
 import qualified Data.ByteString.Char8 as B
+import qualified Data.ByteString.Lazy as L
 
 import           Serv
 import qualified Serv_Iface                     as SI
@@ -48,7 +52,7 @@ type Dollars = Double
 data Food = BEEF | CHK | FISH | HAM | MCH | MTL | SPG | TUR deriving (Show, Ord, Eq)
 data Nutrition = Nutrition { food :: Food, cost :: Dollars, a :: Int, c :: Int, b1 :: Int, b2 :: Int } deriving (Show)
 
-foodParser :: Parser Food 
+foodParser :: Parser Food
 foodParser =
         (string "BEEF"  >> return BEEF)
     <|> (string "CHK"   >> return CHK)
@@ -66,8 +70,8 @@ parseNutritionField = do
     sep
     av <- decimal
     sep
-    cv <- decimal 
-    sep 
+    cv <- decimal
+    sep
     b1v <- decimal
     sep
     b2v <- decimal
@@ -112,11 +116,47 @@ instance SI.Serv_Iface Global where
         print $ "Sending back " <> show retVal
         return retVal
 
+-- | Excel helpers --------------------------------
+cellT :: Maybe CellValue -> Maybe Text
+cellT (Just (CellText t)) = Just t
+cellT _ = Nothing
+
+cellD :: Maybe CellValue -> Maybe Double
+cellD (Just (CellDouble d)) = Just d
+cellD _ = Nothing
+
+cellB :: CellValue -> Maybe Bool
+cellB (CellBool b) = Just b
+cellB _ = Nothing
+
+maybeUntil :: (a -> Maybe b) -> [a] -> [b]
+maybeUntil _ [] = []
+maybeUntil a (x:xs) = case (a x) of
+    Nothing -> []
+    Just v -> v : maybeUntil a xs
+
+readPrices :: Xlsx -> [(Food, Double)]
+readPrices xl = maybeUntil (priceFromExcel xl) [0..]
+
+priceFromExcel :: Xlsx -> Int -> Maybe (Food, Double)
+priceFromExcel xl i
+    | Just textFood  <- cellT $ xl ^? ixSheet "Prices" . ixCell (base + i, 1) . cellValue . _Just
+    , Right food     <- parseOnly foodParser (encodeUtf8 textFood)
+    , Just price     <- cellD $ xl ^? ixSheet "Prices" . ixCell (base + i, 3) . cellValue . _Just
+    = Just $ (food, price)
+    | otherwise = Nothing
+    where
+        base = 1
+
 main :: IO ()
 main = do
     csv <- B.readFile "VitaminContent.csv"
     let nutrition = parseOnly parseNutrition csv
     print nutrition
+
+    xl <- L.readFile "prices.xlsx"
+    let prices = readPrices (toXlsx xl)
+    print prices
 
     runStderrLoggingT $ withSqlitePool "resources/db/example.db" 5 $ \pool -> do
         -- Automatically build my database

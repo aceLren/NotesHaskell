@@ -26,6 +26,7 @@ executable Example
                       ,unordered-containers
                       ,monad-logger
                       ,monad-control
+                      ,lens
                       ,conduit
                       ,stm
                       ,mtl
