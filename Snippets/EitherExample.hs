@@ -1,10 +1,15 @@
+import Prelude hiding (Either(..))
+
+data Either a b = Left a | Right b
+    deriving (Eq, Ord, Read, Show)
+
 -- Either definition
--- data  Either a b  =  Left a | Right b
---   deriving (Eq, Ord, Read, Show, Typeable)
 
 -- instance Functor (Either a) where
---     fmap _ (Left x) = Left x
---     fmap f (Right y) = Right (f y)
+--     ...
+
+-- instance Applicative (Either a) where
+--     ...
 
 -- instance Monad (Either e) where
 --     ...
@@ -25,9 +30,30 @@ alwaysWrong :: Either String Int
 alwaysWrong = Left "Just wrong"
 
 doEitherComp :: Double -> Either String Int
-doEitherComp x = do 
-    a <- closeRound x 
+doEitherComp x = do
+    a <- closeRound x
     b <- greaterTen a
     c <- onlyEvens b
-    alwaysWrong
+    -- alwaysWrong
     return (c * 12)
+
+test = doEitherComp 100
+
+-----------------------------------------
+-- My answer below
+-----------------------------------------
+
+-- instance Functor (Either a) where
+--     fmap f (Right x) = Right (f x)
+--     fmap _ (Left x) = Left x
+--
+-- instance Applicative (Either a) where
+--     pure = Right
+--     Right f <*> Right a = Right (f a)
+--     Right f <*> Left m = Left m
+--     Left m <*> _ = Left m
+--
+-- instance Monad (Either a) where
+--     return = pure
+--     Right x >>= f = f x
+--     Left m >>= _ = Left m

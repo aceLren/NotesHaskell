@@ -83,8 +83,7 @@ test = runState stackManip' [41,2,3] == stackManip [41,2,3]
 prop_same_pop :: [Int] -> Bool
 prop_same_pop xs = runState stackManip' xs == stackManip xs
 
-main :: IO ()
-main = quickCheckWith stdArgs { maxSuccess = 500 } prop_same_pop
+qtest = quickCheckWith stdArgs { maxSuccess = 500 } prop_same_pop
 
 get = undefined
 put = undefined
