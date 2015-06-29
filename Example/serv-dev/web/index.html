@@ -29,6 +29,10 @@ function doPing(client){
     client.ping(function(vl){ console.log("Ping Result",vl);});
 }
 
+function saveFood(client){
+    client.saveFood("FISH",1.24,50,40,60,30,function(vl){ console.log("Food result: ",vl); });
+}
+
 </script>
 </head>
 <body>
@@ -37,7 +41,7 @@ function doPing(client){
         <li>Use live-server clnt-dev/index.html in Example directory</li>
         <li>Open console</li>
         <li>Type: var client = setupExampleClient()</li>
-        <li>Run commands: doPing(client)), or doOp(client)</li>
+        <li>Run commands: doPing(client)), doOp(client), or saveFood(client)</li>
     </ul>
 </body>
 </html>

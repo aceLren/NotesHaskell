@@ -12,7 +12,7 @@
 -- DO NOT EDIT UNLESS YOU ARE SURE YOU KNOW WHAT YOU ARE DOING --
 -----------------------------------------------------------------
 
-module Serv_Client(ping,myOp) where
+module Serv_Client(ping,myOp,saveFood) where
 import qualified Data.IORef as R
 import Prelude (($), (.), (>>=), (==), (++))
 import qualified Prelude as P
@@ -72,3 +72,19 @@ recv_myOp ip = do
   res <- read_MyOp_result ip
   T.readMessageEnd ip
   P.return $ myOp_result_success res
+saveFood (ip,op) arg_nm arg_cost arg_a arg_c arg_b1 arg_b2 = do
+  send_saveFood op arg_nm arg_cost arg_a arg_c arg_b1 arg_b2
+  recv_saveFood ip
+send_saveFood op arg_nm arg_cost arg_a arg_c arg_b1 arg_b2 = do
+  seq <- seqid
+  seqn <- R.readIORef seq
+  T.writeMessageBegin op ("saveFood", T.M_CALL, seqn)
+  write_SaveFood_args op (SaveFood_args{saveFood_args_nm=arg_nm,saveFood_args_cost=arg_cost,saveFood_args_a=arg_a,saveFood_args_c=arg_c,saveFood_args_b1=arg_b1,saveFood_args_b2=arg_b2})
+  T.writeMessageEnd op
+  T.tFlush (T.getTransport op)
+recv_saveFood ip = do
+  (fname, mtype, rseqid) <- T.readMessageBegin ip
+  M.when (mtype == T.M_EXCEPTION) $ do { exn <- T.readAppExn ip ; T.readMessageEnd ip ; X.throw exn }
+  res <- read_SaveFood_result ip
+  T.readMessageEnd ip
+  P.return $ saveFood_result_success res

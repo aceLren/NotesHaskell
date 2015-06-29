@@ -183,6 +183,189 @@ Serv_myOp_result.prototype.write = function(output) {
   return;
 };
 
+Serv_saveFood_args = function(args) {
+  this.nm = null;
+  this.cost = null;
+  this.a = null;
+  this.c = null;
+  this.b1 = null;
+  this.b2 = null;
+  if (args) {
+    if (args.nm !== undefined) {
+      this.nm = args.nm;
+    }
+    if (args.cost !== undefined) {
+      this.cost = args.cost;
+    }
+    if (args.a !== undefined) {
+      this.a = args.a;
+    }
+    if (args.c !== undefined) {
+      this.c = args.c;
+    }
+    if (args.b1 !== undefined) {
+      this.b1 = args.b1;
+    }
+    if (args.b2 !== undefined) {
+      this.b2 = args.b2;
+    }
+  }
+};
+Serv_saveFood_args.prototype = {};
+Serv_saveFood_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.nm = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.DOUBLE) {
+        this.cost = input.readDouble().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.DOUBLE) {
+        this.a = input.readDouble().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 4:
+      if (ftype == Thrift.Type.DOUBLE) {
+        this.c = input.readDouble().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 5:
+      if (ftype == Thrift.Type.DOUBLE) {
+        this.b1 = input.readDouble().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 6:
+      if (ftype == Thrift.Type.DOUBLE) {
+        this.b2 = input.readDouble().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+Serv_saveFood_args.prototype.write = function(output) {
+  output.writeStructBegin('Serv_saveFood_args');
+  if (this.nm !== null && this.nm !== undefined) {
+    output.writeFieldBegin('nm', Thrift.Type.STRING, 1);
+    output.writeString(this.nm);
+    output.writeFieldEnd();
+  }
+  if (this.cost !== null && this.cost !== undefined) {
+    output.writeFieldBegin('cost', Thrift.Type.DOUBLE, 2);
+    output.writeDouble(this.cost);
+    output.writeFieldEnd();
+  }
+  if (this.a !== null && this.a !== undefined) {
+    output.writeFieldBegin('a', Thrift.Type.DOUBLE, 3);
+    output.writeDouble(this.a);
+    output.writeFieldEnd();
+  }
+  if (this.c !== null && this.c !== undefined) {
+    output.writeFieldBegin('c', Thrift.Type.DOUBLE, 4);
+    output.writeDouble(this.c);
+    output.writeFieldEnd();
+  }
+  if (this.b1 !== null && this.b1 !== undefined) {
+    output.writeFieldBegin('b1', Thrift.Type.DOUBLE, 5);
+    output.writeDouble(this.b1);
+    output.writeFieldEnd();
+  }
+  if (this.b2 !== null && this.b2 !== undefined) {
+    output.writeFieldBegin('b2', Thrift.Type.DOUBLE, 6);
+    output.writeDouble(this.b2);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+Serv_saveFood_result = function(args) {
+  this.success = null;
+  if (args) {
+    if (args.success !== undefined) {
+      this.success = args.success;
+    }
+  }
+};
+Serv_saveFood_result.prototype = {};
+Serv_saveFood_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.BOOL) {
+        this.success = input.readBool().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+Serv_saveFood_result.prototype.write = function(output) {
+  output.writeStructBegin('Serv_saveFood_result');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.BOOL, 0);
+    output.writeBool(this.success);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 ServClient = function(input, output) {
     this.input = input;
     this.output = (!output) ? input : output;
@@ -283,4 +466,58 @@ ServClient.prototype.recv_myOp = function() {
     return result.success;
   }
   throw 'myOp failed: unknown result';
+};
+ServClient.prototype.saveFood = function(nm, cost, a, c, b1, b2, callback) {
+  this.send_saveFood(nm, cost, a, c, b1, b2, callback); 
+  if (!callback) {
+    return this.recv_saveFood();
+  }
+};
+
+ServClient.prototype.send_saveFood = function(nm, cost, a, c, b1, b2, callback) {
+  this.output.writeMessageBegin('saveFood', Thrift.MessageType.CALL, this.seqid);
+  var args = new Serv_saveFood_args();
+  args.nm = nm;
+  args.cost = cost;
+  args.a = a;
+  args.c = c;
+  args.b1 = b1;
+  args.b2 = b2;
+  args.write(this.output);
+  this.output.writeMessageEnd();
+  if (callback) {
+    var self = this;
+    this.output.getTransport().flush(true, function() {
+      var result = null;
+      try {
+        result = self.recv_saveFood();
+      } catch (e) {
+        result = e;
+      }
+      callback(result);
+    });
+  } else {
+    return this.output.getTransport().flush();
+  }
+};
+
+ServClient.prototype.recv_saveFood = function() {
+  var ret = this.input.readMessageBegin();
+  var fname = ret.fname;
+  var mtype = ret.mtype;
+  var rseqid = ret.rseqid;
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(this.input);
+    this.input.readMessageEnd();
+    throw x;
+  }
+  var result = new Serv_saveFood_result();
+  result.read(this.input);
+  this.input.readMessageEnd();
+
+  if (null !== result.success) {
+    return result.success;
+  }
+  throw 'saveFood failed: unknown result';
 };

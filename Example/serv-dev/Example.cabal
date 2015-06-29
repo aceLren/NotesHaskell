@@ -48,6 +48,7 @@ executable Example
                       ,warp
                       ,warp-tls
                       ,xlsx
+                      ,cplex
 
     hs-source-dirs:   ./src,./lib/,./lib/gen-hs/
     default-language: Haskell2010

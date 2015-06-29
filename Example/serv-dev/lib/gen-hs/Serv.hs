@@ -162,6 +162,100 @@ typemap_MyOp_result = Map.fromList [(0,("success",T.T_I32))]
 default_MyOp_result :: MyOp_result
 default_MyOp_result = MyOp_result{
   myOp_result_success = 0}
+data SaveFood_args = SaveFood_args  { saveFood_args_nm :: LT.Text
+  , saveFood_args_cost :: P.Double
+  , saveFood_args_a :: P.Double
+  , saveFood_args_c :: P.Double
+  , saveFood_args_b1 :: P.Double
+  , saveFood_args_b2 :: P.Double
+  } deriving (P.Show,P.Eq,TY.Typeable)
+instance H.Hashable SaveFood_args where
+  hashWithSalt salt record = salt   `H.hashWithSalt` saveFood_args_nm record   `H.hashWithSalt` saveFood_args_cost record   `H.hashWithSalt` saveFood_args_a record   `H.hashWithSalt` saveFood_args_c record   `H.hashWithSalt` saveFood_args_b1 record   `H.hashWithSalt` saveFood_args_b2 record  
+instance QC.Arbitrary SaveFood_args where 
+  arbitrary = M.liftM SaveFood_args (QC.arbitrary)
+          `M.ap`(QC.arbitrary)
+          `M.ap`(QC.arbitrary)
+          `M.ap`(QC.arbitrary)
+          `M.ap`(QC.arbitrary)
+          `M.ap`(QC.arbitrary)
+  shrink obj | obj == default_SaveFood_args = []
+             | P.otherwise = M.catMaybes
+    [ if obj == default_SaveFood_args{saveFood_args_nm = saveFood_args_nm obj} then P.Nothing else P.Just $ default_SaveFood_args{saveFood_args_nm = saveFood_args_nm obj}
+    , if obj == default_SaveFood_args{saveFood_args_cost = saveFood_args_cost obj} then P.Nothing else P.Just $ default_SaveFood_args{saveFood_args_cost = saveFood_args_cost obj}
+    , if obj == default_SaveFood_args{saveFood_args_a = saveFood_args_a obj} then P.Nothing else P.Just $ default_SaveFood_args{saveFood_args_a = saveFood_args_a obj}
+    , if obj == default_SaveFood_args{saveFood_args_c = saveFood_args_c obj} then P.Nothing else P.Just $ default_SaveFood_args{saveFood_args_c = saveFood_args_c obj}
+    , if obj == default_SaveFood_args{saveFood_args_b1 = saveFood_args_b1 obj} then P.Nothing else P.Just $ default_SaveFood_args{saveFood_args_b1 = saveFood_args_b1 obj}
+    , if obj == default_SaveFood_args{saveFood_args_b2 = saveFood_args_b2 obj} then P.Nothing else P.Just $ default_SaveFood_args{saveFood_args_b2 = saveFood_args_b2 obj}
+    ]
+from_SaveFood_args :: SaveFood_args -> T.ThriftVal
+from_SaveFood_args record = T.TStruct $ Map.fromList $ M.catMaybes
+  [ (\_v33 -> P.Just (1, ("nm",T.TString $ E.encodeUtf8 _v33))) $ saveFood_args_nm record
+  , (\_v33 -> P.Just (2, ("cost",T.TDouble _v33))) $ saveFood_args_cost record
+  , (\_v33 -> P.Just (3, ("a",T.TDouble _v33))) $ saveFood_args_a record
+  , (\_v33 -> P.Just (4, ("c",T.TDouble _v33))) $ saveFood_args_c record
+  , (\_v33 -> P.Just (5, ("b1",T.TDouble _v33))) $ saveFood_args_b1 record
+  , (\_v33 -> P.Just (6, ("b2",T.TDouble _v33))) $ saveFood_args_b2 record
+  ]
+write_SaveFood_args :: (T.Protocol p, T.Transport t) => p t -> SaveFood_args -> P.IO ()
+write_SaveFood_args oprot record = T.writeVal oprot $ from_SaveFood_args record
+encode_SaveFood_args :: (T.Protocol p, T.Transport t) => p t -> SaveFood_args -> LBS.ByteString
+encode_SaveFood_args oprot record = T.serializeVal oprot $ from_SaveFood_args record
+to_SaveFood_args :: T.ThriftVal -> SaveFood_args
+to_SaveFood_args (T.TStruct fields) = SaveFood_args{
+  saveFood_args_nm = P.maybe (saveFood_args_nm default_SaveFood_args) (\(_,_val35) -> (case _val35 of {T.TString _val36 -> E.decodeUtf8 _val36; _ -> P.error "wrong type"})) (Map.lookup (1) fields),
+  saveFood_args_cost = P.maybe (saveFood_args_cost default_SaveFood_args) (\(_,_val35) -> (case _val35 of {T.TDouble _val37 -> _val37; _ -> P.error "wrong type"})) (Map.lookup (2) fields),
+  saveFood_args_a = P.maybe (saveFood_args_a default_SaveFood_args) (\(_,_val35) -> (case _val35 of {T.TDouble _val38 -> _val38; _ -> P.error "wrong type"})) (Map.lookup (3) fields),
+  saveFood_args_c = P.maybe (saveFood_args_c default_SaveFood_args) (\(_,_val35) -> (case _val35 of {T.TDouble _val39 -> _val39; _ -> P.error "wrong type"})) (Map.lookup (4) fields),
+  saveFood_args_b1 = P.maybe (saveFood_args_b1 default_SaveFood_args) (\(_,_val35) -> (case _val35 of {T.TDouble _val40 -> _val40; _ -> P.error "wrong type"})) (Map.lookup (5) fields),
+  saveFood_args_b2 = P.maybe (saveFood_args_b2 default_SaveFood_args) (\(_,_val35) -> (case _val35 of {T.TDouble _val41 -> _val41; _ -> P.error "wrong type"})) (Map.lookup (6) fields)
+  }
+to_SaveFood_args _ = P.error "not a struct"
+read_SaveFood_args :: (T.Transport t, T.Protocol p) => p t -> P.IO SaveFood_args
+read_SaveFood_args iprot = to_SaveFood_args <$> T.readVal iprot (T.T_STRUCT typemap_SaveFood_args)
+decode_SaveFood_args :: (T.Protocol p, T.Transport t) => p t -> LBS.ByteString -> SaveFood_args
+decode_SaveFood_args iprot bs = to_SaveFood_args $ T.deserializeVal iprot (T.T_STRUCT typemap_SaveFood_args) bs
+typemap_SaveFood_args :: T.TypeMap
+typemap_SaveFood_args = Map.fromList [(1,("nm",T.T_STRING)),(2,("cost",T.T_DOUBLE)),(3,("a",T.T_DOUBLE)),(4,("c",T.T_DOUBLE)),(5,("b1",T.T_DOUBLE)),(6,("b2",T.T_DOUBLE))]
+default_SaveFood_args :: SaveFood_args
+default_SaveFood_args = SaveFood_args{
+  saveFood_args_nm = "",
+  saveFood_args_cost = 0,
+  saveFood_args_a = 0,
+  saveFood_args_c = 0,
+  saveFood_args_b1 = 0,
+  saveFood_args_b2 = 0}
+data SaveFood_result = SaveFood_result  { saveFood_result_success :: P.Bool
+  } deriving (P.Show,P.Eq,TY.Typeable)
+instance H.Hashable SaveFood_result where
+  hashWithSalt salt record = salt   `H.hashWithSalt` saveFood_result_success record  
+instance QC.Arbitrary SaveFood_result where 
+  arbitrary = M.liftM SaveFood_result (QC.arbitrary)
+  shrink obj | obj == default_SaveFood_result = []
+             | P.otherwise = M.catMaybes
+    [ if obj == default_SaveFood_result{saveFood_result_success = saveFood_result_success obj} then P.Nothing else P.Just $ default_SaveFood_result{saveFood_result_success = saveFood_result_success obj}
+    ]
+from_SaveFood_result :: SaveFood_result -> T.ThriftVal
+from_SaveFood_result record = T.TStruct $ Map.fromList $ M.catMaybes
+  [ (\_v44 -> P.Just (0, ("success",T.TBool _v44))) $ saveFood_result_success record
+  ]
+write_SaveFood_result :: (T.Protocol p, T.Transport t) => p t -> SaveFood_result -> P.IO ()
+write_SaveFood_result oprot record = T.writeVal oprot $ from_SaveFood_result record
+encode_SaveFood_result :: (T.Protocol p, T.Transport t) => p t -> SaveFood_result -> LBS.ByteString
+encode_SaveFood_result oprot record = T.serializeVal oprot $ from_SaveFood_result record
+to_SaveFood_result :: T.ThriftVal -> SaveFood_result
+to_SaveFood_result (T.TStruct fields) = SaveFood_result{
+  saveFood_result_success = P.maybe (saveFood_result_success default_SaveFood_result) (\(_,_val46) -> (case _val46 of {T.TBool _val47 -> _val47; _ -> P.error "wrong type"})) (Map.lookup (0) fields)
+  }
+to_SaveFood_result _ = P.error "not a struct"
+read_SaveFood_result :: (T.Transport t, T.Protocol p) => p t -> P.IO SaveFood_result
+read_SaveFood_result iprot = to_SaveFood_result <$> T.readVal iprot (T.T_STRUCT typemap_SaveFood_result)
+decode_SaveFood_result :: (T.Protocol p, T.Transport t) => p t -> LBS.ByteString -> SaveFood_result
+decode_SaveFood_result iprot bs = to_SaveFood_result $ T.deserializeVal iprot (T.T_STRUCT typemap_SaveFood_result) bs
+typemap_SaveFood_result :: T.TypeMap
+typemap_SaveFood_result = Map.fromList [(0,("success",T.T_BOOL))]
+default_SaveFood_result :: SaveFood_result
+default_SaveFood_result = SaveFood_result{
+  saveFood_result_success = P.False}
 process_ping (seqid, iprot, oprot, handler) = do
   args <- read_Ping_args iprot
   (X.catch
@@ -192,9 +286,25 @@ process_myOp (seqid, iprot, oprot, handler) = do
       T.writeAppExn oprot (T.AppExn T.AE_UNKNOWN "")
       T.writeMessageEnd oprot
       T.tFlush (T.getTransport oprot)) :: X.SomeException -> P.IO ()))
+process_saveFood (seqid, iprot, oprot, handler) = do
+  args <- read_SaveFood_args iprot
+  (X.catch
+    (do
+      val <- Iface.saveFood handler (saveFood_args_nm args) (saveFood_args_cost args) (saveFood_args_a args) (saveFood_args_c args) (saveFood_args_b1 args) (saveFood_args_b2 args)
+      let res = default_SaveFood_result{saveFood_result_success = val}
+      T.writeMessageBegin oprot ("saveFood", T.M_REPLY, seqid)
+      write_SaveFood_result oprot res
+      T.writeMessageEnd oprot
+      T.tFlush (T.getTransport oprot))
+    ((\_ -> do
+      T.writeMessageBegin oprot ("saveFood", T.M_EXCEPTION, seqid)
+      T.writeAppExn oprot (T.AppExn T.AE_UNKNOWN "")
+      T.writeMessageEnd oprot
+      T.tFlush (T.getTransport oprot)) :: X.SomeException -> P.IO ()))
 proc_ handler (iprot,oprot) (name,typ,seqid) = case name of
   "ping" -> process_ping (seqid,iprot,oprot,handler)
   "myOp" -> process_myOp (seqid,iprot,oprot,handler)
+  "saveFood" -> process_saveFood (seqid,iprot,oprot,handler)
   _ -> do
     _ <- T.readVal iprot (T.T_STRUCT Map.empty)
     T.writeMessageBegin oprot (name,T.M_EXCEPTION,seqid)

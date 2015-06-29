@@ -41,3 +41,4 @@ import Serv_Types
 class Serv_Iface a where
   ping :: a -> P.IO ()
   myOp :: a -> ServArgs -> LT.Text -> P.IO I.Int32
+  saveFood :: a -> LT.Text -> P.Double -> P.Double -> P.Double -> P.Double -> P.Double -> P.IO P.Bool
