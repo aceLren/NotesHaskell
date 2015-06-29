@@ -58,6 +58,9 @@ multiplyAndLog vl = do
 prop_same_as_writer :: Int -> Bool
 prop_same_as_writer x = multiplyAndLog' x == (runWriter $ multiplyAndLog x)
 
+prop_monad_left :: Int -> Bool
+prop_monad_left a = (runWriter (return a >>= multiplyAndLog)) == (runWriter $ multiplyAndLog a)
+
 -- Test with one value, that's pretty cool
 test = multiplyAndLog' 100 == (runWriter $ multiplyAndLog 100)
 
