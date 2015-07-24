@@ -8,6 +8,15 @@ Something I think will be HUGE over the next 10 years:
 
 [Distributed / Parallel Processing](https://youtu.be/UMbc6iyH-xQ?t=20m14s)
 
+Randoms
+---
+
+-   Liquid Types
+-   [Tidal](http://tidal.lurk.org/)
+-   [Games](http://helm-engine.org/)
+-   [Plot R](http://code.haskell.org/~aavogt/ipopt-hs/examples/Spline1.hs)
+-   [More R](https://hackage.haskell.org/package/Rlang-QQ-0.1.0.1/docs/RlangQQ.html)
+
 Morphisms
 ---
 
